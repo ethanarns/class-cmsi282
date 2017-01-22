@@ -9,7 +9,7 @@ public class Select {
         //     System.exit(0);
         // }
         //
-        // int k = -1;
+        int k = 1;
         // try {
         //     k = Integer.parseInt(args[0]);
         // } catch (Exception e) {
@@ -41,57 +41,45 @@ public class Select {
         // System.out.println(getKthSmallest(list, k));
 
        	ArrayList<Integer> a = new ArrayList<Integer>();
-       	a.add(1);
-        a.add(5);
-       	a.add(6);
-       	a.add(3);
-       	a.add(4);
-       	a.add(8);
-       	a.add(7);
-       	a.add(2);
-       	a.add(9);
+       	a.add(10);
+        a.add(50);
+       	a.add(60);
+       	a.add(30);
+       	a.add(40);
+       	a.add(80);
+       	a.add(70);
+       	a.add(20);
+       	a.add(90);
 
-        System.out.println(partition(a, 0, a.size()-1, 4));
-     //   	for(int i = 0; i < 9; i++) {
-     //   		partition((ArrayList<Integer>)a.clone(), i, 0, 8);
-     //   	}
+        System.out.println(getKthSmallest(a, 0, a.size() - 1, k - 1));
     }
 
-    /**
-     * Returns the kth smallest integer in the dataset
-     * @param list   array to search
-     * @param k      index to find
-     * @return       the kth smallest number in the array
-     */
-    public static int getKthSmallest(ArrayList<Integer> list, int k) {
-        // partition the array by a randomly picked index for pivot;
-        if (true) {
-            // if k is less than the partition index, go from 0, k-1
-        } else if (true) {
-            // if k is equal to partition index, return element at k
-        } else {
-            // if k is greater than partition index, go from k+1 to end of array
+    public static int getKthSmallest(ArrayList<Integer> list, int start, int end, int k) {
+        // System.out.println(list);
+        // System.out.println("start: " + start + ", end: " + end);
+        int rand = (int) (Math.random() * ((end - start) + 1) + start);
+        // System.out.println("RAND: " + rand);
+        int pivotIndex = partition(list, start, end, rand);
+        // System.out.println("PivotIndex: " + pivotIndex + ", k: " + k);
+        // System.out.println(list + "\n");
+        if(start > end) {
+            // System.out.println("Start is greater than end");
+            return -1;
         }
-		return k; //?
+        if (k < pivotIndex) {
+            return getKthSmallest(list, start, pivotIndex - 1, k);
+        } else if (k > pivotIndex) {
+            return getKthSmallest(list, pivotIndex + 1, end, k);
+        }
+		return list.get(pivotIndex);
     }
 
-    /**
-     * Swaps i and j in the array a
-     * @param a   array to swap i and j in
-     * @param i   first index to swap
-     * @param j   second index to swap
-     */
     public static void swap(ArrayList<Integer> a, int i, int j) {
     	int	temp = a.get(i);
     	a.set(i, a.get(j));
     	a.set(j, temp);
     }
 
-    /**
-     * Performs one partition of an array
-     * @param a       array to change
-     * @param pivot   a random Integer taken from function called
-     */
     public static int partition(ArrayList<Integer> a, int start, int end, int pivot) {
     	int i = start;
     	int j = start;
