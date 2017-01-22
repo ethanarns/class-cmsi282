@@ -4,54 +4,41 @@ import java.util.ArrayList;
 
 public class Select {
     public static void main (String[] args) {
-        // if (args.length != 1) {
-        //     System.out.println("BAD DATA");
-        //     System.exit(0);
-        // }
-        //
-        int k = 5;
-        // try {
-        //     k = Integer.parseInt(args[0]);
-        // } catch (Exception e) {
-        //     System.out.println("BAD DATA");
-        //     System.exit(0);
-        // }
-        //
-        // if(k <= 0) {
-        // 	System.out.println("BAD DATA");
-        // 	System.exit(0);
-        // }
-        //
-        // BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
-        // ArrayList<Integer> list = new ArrayList<Integer>();
-        // try {
-	    //     for (String s = stdIn.readLine(); s != null; s = stdIn.readLine()) {
-	    //         try {
-	    //             list.add(Integer.parseInt(s));
-	    //         } catch (Exception e) {
-	    //             System.out.println("BAD DATA");
-	    //             System.exit(0);
-	    //         }
-	    //     }
-        // } catch (Exception e) {
-        // 	System.out.println("BAD DATA");
-        // 	System.exit(0);
-        // }
-        //
-        // System.out.println(getKthSmallest(list, k));
+        if (args.length != 1) {
+            System.out.println("BAD DATA");
+            System.exit(0);
+        }
 
-       	ArrayList<Integer> a = new ArrayList<Integer>();
-       	a.add(10);
-        a.add(50);
-       	a.add(60);
-       	a.add(30);
-       	a.add(40);
-       	a.add(80);
-       	a.add(70);
-       	a.add(20);
-       	a.add(90);
+        int k = 3;
+        try {
+            k = Integer.parseInt(args[0]);
+        } catch (Exception e) {
+            System.out.println("BAD DATA");
+            System.exit(0);
+        }
 
-        System.out.println(getKthSmallest(a, 0, a.size() - 1, k - 1));
+        BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        try {
+	        for (String s = stdIn.readLine(); s != null; s = stdIn.readLine()) {
+	            try {
+	                list.add(Integer.parseInt(s));
+	            } catch (Exception e) {
+	                System.out.println("BAD DATA");
+	                System.exit(0);
+	            }
+	        }
+        } catch (Exception e) {
+        	System.out.println("BAD DATA");
+        	System.exit(0);
+        }
+
+        if(k <= 0 || k > list.size()) {
+            System.out.println("BAD DATA");
+            System.exit(0);
+        }
+
+        System.out.println(getKthSmallest(list, 0, list.size() - 1, k - 1));
     }
 
     public static int getKthSmallest(ArrayList<Integer> list, int start, int end, int k) {
@@ -60,12 +47,7 @@ public class Select {
         int rand = (int) (Math.random() * ((end - start) + 1) + start);
         // System.out.println("RAND: " + rand);
         int[] pivotRange = partition(list, start, end, rand);
-        // System.out.println("PivotIndex: " + pivotIndex + ", k: " + k);
         // System.out.println(list + "\n");
-        if(start > end) {
-            // System.out.println("Start is greater than end");
-            return -1;
-        }
         if (k < pivotRange[0]) {
             return getKthSmallest(list, start, pivotRange[0] - 1, k);
         } else if (k > pivotRange[1]) {
