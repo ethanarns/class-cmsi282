@@ -9,7 +9,7 @@ public class Select {
         //     System.exit(0);
         // }
         //
-        int k = 1;
+        int k = 5;
         // try {
         //     k = Integer.parseInt(args[0]);
         // } catch (Exception e) {
@@ -59,19 +59,19 @@ public class Select {
         // System.out.println("start: " + start + ", end: " + end);
         int rand = (int) (Math.random() * ((end - start) + 1) + start);
         // System.out.println("RAND: " + rand);
-        int pivotIndex = partition(list, start, end, rand);
+        int[] pivotRange = partition(list, start, end, rand);
         // System.out.println("PivotIndex: " + pivotIndex + ", k: " + k);
         // System.out.println(list + "\n");
         if(start > end) {
             // System.out.println("Start is greater than end");
             return -1;
         }
-        if (k < pivotIndex) {
-            return getKthSmallest(list, start, pivotIndex - 1, k);
-        } else if (k > pivotIndex) {
-            return getKthSmallest(list, pivotIndex + 1, end, k);
+        if (k < pivotRange[0]) {
+            return getKthSmallest(list, start, pivotRange[0] - 1, k);
+        } else if (k > pivotRange[1]) {
+            return getKthSmallest(list, pivotRange[1] + 1, end, k);
         }
-		return list.get(pivotIndex);
+		return list.get(pivotRange[0]);
     }
 
     public static void swap(ArrayList<Integer> a, int i, int j) {
@@ -80,9 +80,10 @@ public class Select {
     	a.set(j, temp);
     }
 
-    public static int partition(ArrayList<Integer> a, int start, int end, int pivot) {
+    public static int[] partition(ArrayList<Integer> a, int start, int end, int pivot) {
     	int i = start;
     	int j = start;
+        int[] res = new int[]{start, end};
 
     	swap(a, end, pivot);
 
@@ -91,14 +92,18 @@ public class Select {
     		if(a.get(j) < a.get(pivot)) {
     			swap(a, i, j);
     			i++;
-    		}
+    		} else if (a.get(j) == a.get(pivot)) {
+                swap(a, j--, --pivot);
+            }
     		j++;
     		//System.out.println("i: " + i + ", j: " + j + ", pivot value: " + a.get(pivot));
     	}
-    	//swap i and pivot
-    	swap(a, i, pivot);
-
+        res[0] = i;
+        res[1] = i + end - pivot;
+        while (pivot <= end) {
+            swap(a, i++, pivot++);
+        }
         // returns the location of the pivot element
-        return i;
+        return res;
     }
 }
