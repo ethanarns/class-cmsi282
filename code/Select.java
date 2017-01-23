@@ -37,8 +37,12 @@ public class Select {
             System.out.println("BAD DATA");
             System.exit(0);
         }
-
-        System.out.println(getKthSmallest(list, 0, list.size() - 1, k - 1));
+        long currentTime;
+        for (int i = 0; i < 50; i++) {
+            currentTime = System.currentTimeMillis();
+            getKthSmallest(list, 0, list.size() - 1, k - 1);
+            System.out.println((System.currentTimeMillis() - currentTime) + " ms.");
+        }
     }
 
     public static int getKthSmallest(ArrayList<Integer> list, int start, int end, int k) {
