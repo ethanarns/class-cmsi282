@@ -38,7 +38,7 @@ public class Select {
             System.exit(0);
         }
         long currentTime;
-        for (int i = 0; i < 50; i++) {
+        for (int i = 0; i < 100; i++) {
             currentTime = System.currentTimeMillis();
             getKthSmallest(list, 0, list.size() - 1, k - 1);
             System.out.println((System.currentTimeMillis() - currentTime) + " ms.");
