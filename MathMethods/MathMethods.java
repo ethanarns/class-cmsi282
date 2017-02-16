@@ -7,16 +7,33 @@ class MathMethods {
 
     // Runner, takes in input from command line
     public static void main(String args[]) {
-        System.out.println("Hello World");
-        //System.out.println(MathMethods.gcd(8,18));
-        //System.out.println(MathMethods.lcm(0,1));
-        //double[] polyList = {2.0,3.0,4.0};
-        //MathMethods.poly(3.0, polyList); // Should be 47
-        //MathMethods.gcd(9,15);
-        //System.out.println(MathMethods.fibonacci(6));
+        System.out.println("Welcome to MathMethods!");
+        System.out.println("---");
+        System.out.println("GCD of 8 and 28: " + MathMethods.gcd(8,28));
+        System.out.println("---");
+        System.out.println("LCM of 8 and 5: " + MathMethods.lcm(8,5));
+        System.out.println("---");
+        double[] polyList = {2.0,3.0,4.0};
+        System.out.println("Polynomial: " + MathMethods.poly(3.0, polyList) + " should be 47"); // Should be 47
+        System.out.println("---");
+        System.out.println("Fibonacci of 6: " + MathMethods.fibonacci(6));
+        System.out.println("---");
+        System.out.println("Powers of 2:");
         for(int i = 0; i < 8; i++) {
-            System.out.println(MathMethods.power(0,-1*i));
+            System.out.println("2^" + i + " = " + MathMethods.power(2,i));
         }
+        System.out.println("---");
+        System.out.println("nth-roots:");
+        double powQuestion;
+        int root = 2;
+        double orig = 8;
+        double ans;
+        System.out.println("" + root + "√" + orig + " = " + (powQuestion = MathMethods.root(root,orig,0.00001)));
+        ans = MathMethods.power(powQuestion,root);
+        System.out.println("ans: " + ans + ", orig: " + orig);
+        System.out.println("---");
+        System.out.println("Square root of 64: " + MathMethods.sqrt(64,0.1));
+        System.out.println("Square root of 60: " + MathMethods.sqrt(60,0.00001));
     }
 
     public MathMethods() {
@@ -93,7 +110,7 @@ class MathMethods {
             return x;
         }
         else if(n == 2) {
-            return x*x;
+            return x * x;
         }
         else {
             return power(x, n/2) * power(x, n-(n/2));
@@ -123,14 +140,45 @@ class MathMethods {
             return 0;
         }
     }
-    
+
+    private static boolean isInRange(double num, double idealNum, double range) {
+        if(num + range > idealNum) {
+            if(num - range < idealNum) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     // n√x using Binary Search
+    // what = n√x?
+    // In other words, what^n = x?
     public static double root(int n, double x, double episolon) {
         double upperBound = x;
         double lowerBound = 0;
-        double guess = x / 2;
-        // Use exponents here
-        return -1;
+        double guess = x/2;
+        double rooted = power(guess,n);
+        int stopper = 0;
+        //System.out.println("LowerBound: " + lowerBound + ", UpperBound: " + upperBound + ", Guess: " + guess + ", Rooted: " + rooted + ", x: " + x);
+        //while( rooted != x ) {
+        while(rooted < x - episolon || rooted > x + episolon) {
+            stopper++;
+            if(stopper > 999999) {
+                // Just in case
+                System.out.println("MAX ITERATIONS REACHED.");
+                return guess;
+            }
+            if(rooted > x) {
+                upperBound = guess;
+            }
+            else if(rooted < x) {
+                lowerBound = guess;
+            }
+            guess = (upperBound + lowerBound) / 2;
+            rooted = power(guess, n);
+            //System.out.println("LowerBound: " + lowerBound + ", UpperBound: " + upperBound + ", Guess: " + guess + ", Rooted: " + rooted + ", x: " + x);
+        }
+        return guess;
     }
 
     // √x (Literally just the above, but with n being 2)
