@@ -5,50 +5,12 @@ class MathMethods {
 
     // Runner, takes in input from command line
     public static void main(String args[]) {
-        if(args.length < 1) {
-            System.out.println("Welcome to MathMethods!");
-            System.out.println("---");
-            System.out.println("GCD of 8 and 28: " + MathMethods.gcd(8,28));
-            System.out.println("---");
-            System.out.println("LCM of 8 and 5: " + MathMethods.lcm(8,5));
-            System.out.println("---");
-            double[] polyList = {2.0,3.0,4.0};
-            System.out.println("Polynomial: " + MathMethods.poly(3.0, polyList) + " should be 47"); // Should be 47
-            System.out.println("---");
-            System.out.println("Fibonacci 0 to 8:");
-            for(int i = 0; i <= 8; i++) {
-                System.out.print("" + MathMethods.fibonacci(i) + " ");
-            }
-            System.out.println("\n---");
-            System.out.println("Powers of 2:");
-            for(int i = 0; i < 8; i++) {
-                System.out.println("2^" + i + " = " + MathMethods.power(2,i));
-            }
-            System.out.println("---");
-            System.out.println("nth-roots:");
-            double powQuestion;
-            int root = 2;
-            double orig = 8;
-            double ans;
-            System.out.println("" + root + "√" + orig + " = " + (powQuestion = MathMethods.root(root,orig,0.00001)));
-            ans = MathMethods.power(powQuestion,root);
-            System.out.println("ans: " + ans + ", orig: " + orig);
-            System.out.println("---");
-            System.out.println("Square root of 64: " + MathMethods.sqrt(64,0.1));
-            System.out.println("Square root of 60: " + MathMethods.sqrt(60,0.00001));
-            System.out.println("---");
-            System.out.println("Factorial 4: " + MathMethods.factorial(4));
-            System.out.println("Factorial 7: " + MathMethods.factorial(7));
+        if(args.length < 2) {
+            System.out.println("INVALID INPUT");
             return;
         }
-        else if(args.length == 1) {
-            System.out.println("BAD INPUT");
-            return;
-        }
-        // Clean up first argument
         args[0] = args[0].trim().toLowerCase();
         switch(args[0]) {
-
             // Factorial function
             case("factorial"):
                 if(args.length > 2) {
@@ -127,7 +89,7 @@ class MathMethods {
 
             // Error
             default:
-                System.out.println("NO INPUT");
+                System.out.println("INVALID INPUT");
                 return;
         }
     }
@@ -242,9 +204,11 @@ class MathMethods {
     }
 
     // n√x using Binary Search
-    // what = n√x?
-    // In other words, what^n = x?
     public static double root(int n, double x, double episolon) {
+        if(episolon < 0) {
+            System.out.println("BAD INPUT");
+            return -1.0;
+        }
         double upperBound = x;
         double lowerBound = 0;
         double guess = x/2;
@@ -253,7 +217,7 @@ class MathMethods {
         //while( rooted != x ) {
         while(rooted < x - episolon || rooted > x + episolon) {
             stopper++;
-            if(stopper > 99999999) {
+            if(stopper > 999999999) {
                 // Just in case
                 System.out.println("MAX ITERATIONS REACHED.");
                 return guess;
