@@ -39,11 +39,101 @@ class MathMethods {
             System.out.println("---");
             System.out.println("Factorial 4: " + MathMethods.factorial(4));
             System.out.println("Factorial 7: " + MathMethods.factorial(7));
+            return;
+        }
+        else if(args.length == 1) {
+            System.out.println("BAD INPUT");
+            return;
+        }
+        // Clean up first argument
+        args[0] = args[0].trim().toLowerCase();
+        switch(args[0]) {
+
+            // Factorial function
+            case("factorial"):
+                if(args.length > 2) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println(factorial(Integer.parseInt(args[1].trim())));
+                break;
+
+            // Fibonacci function
+            case("fibonacci"):
+                if(args.length > 2) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println(fibonacci(Integer.parseInt(args[1].trim())));
+                break;
+
+            // Greatest Common Denominator
+            case("gcd"):
+                if(args.length != 3) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println( gcd(Long.parseLong(args[1]), Long.parseLong(args[2]) ) );
+                break;
+
+            // Least Common Multiple
+            case("lcm"):
+                if(args.length != 3) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println( lcm(Long.parseLong(args[1]), Long.parseLong(args[2]) ) );
+                break;
+
+            // Exponent (2 args)
+            case("power"):
+                if(args.length != 3) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println( power(Double.parseDouble(args[1]), Integer.parseInt(args[2]) ) );
+                break;
+
+            // N-th root (3 args)
+            case("root"):
+                if(args.length != 4) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println( root(Integer.parseInt(args[1]), Double.parseDouble(args[2]), Double.parseDouble(args[3]) ) );
+                break;
+
+            // Square root (2 args)
+            case("sqrt"):
+                if(args.length != 3) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                System.out.println( sqrt(Double.parseDouble(args[1]), Double.parseDouble(args[2]) ) );
+                break;
+
+            // Polynomial (n args)
+            case("poly"):
+                if(args.length < 3) {
+                    System.out.println("INVALID INPUT");
+                    return;
+                }
+                double[] inputArray = new double[args.length - 2];
+                for(int i = 2; i < args.length; i++) {
+                    inputArray[i - 2] = Double.parseDouble(args[i]);
+                }
+                System.out.println( poly(Double.parseDouble(args[1]), inputArray ) );
+                break;
+
+            // Error
+            default:
+                System.out.println("NO INPUT");
+                return;
         }
     }
 
     public MathMethods() {
-        resultCol = new ArrayList<ArrayList<Integer>>();
+
     }
 
     public static BigInteger factorial(int n) {
@@ -151,15 +241,6 @@ class MathMethods {
             return 0;
     }
 
-    private static boolean isInRange(double num, double idealNum, double range) {
-        if(num + range > idealNum) {
-            if(num - range < idealNum) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // n√x using Binary Search
     // what = n√x?
     // In other words, what^n = x?
@@ -169,11 +250,10 @@ class MathMethods {
         double guess = x/2;
         double rooted = power(guess,n);
         int stopper = 0;
-        //System.out.println("LowerBound: " + lowerBound + ", UpperBound: " + upperBound + ", Guess: " + guess + ", Rooted: " + rooted + ", x: " + x);
         //while( rooted != x ) {
         while(rooted < x - episolon || rooted > x + episolon) {
             stopper++;
-            if(stopper > 999999) {
+            if(stopper > 99999999) {
                 // Just in case
                 System.out.println("MAX ITERATIONS REACHED.");
                 return guess;
@@ -186,7 +266,6 @@ class MathMethods {
             }
             guess = (upperBound + lowerBound) / 2;
             rooted = power(guess, n);
-            //System.out.println("LowerBound: " + lowerBound + ", UpperBound: " + upperBound + ", Guess: " + guess + ", Rooted: " + rooted + ", x: " + x);
         }
         return guess;
     }
@@ -194,17 +273,5 @@ class MathMethods {
     // √x (Literally just the above, but with n being 2)
     public static double sqrt(double x, double episolon) {
         return MathMethods.root(2, x, episolon);
-    }
-
-    public static void printTest() {
-        int[] results1 = {1, 2, 3, 4};
-        int[] results2 = {5, 6, 7, 8};
-        int[][] results = {results1, results2};
-        for(int i = 0; i < results1.length; i++) {
-            for(int[] r : results) {
-                System.out.print(r[i] + " ");
-            }
-            System.out.println();
-        }
     }
 }
