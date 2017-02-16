@@ -1,39 +1,45 @@
-import java.util.ArrayList;
 import java.math.BigInteger;
 
 // http://pdorin.cs.lmu.edu/282.stuff/MathMethods/index.html
 class MathMethods {
-    public ArrayList<ArrayList<Integer>> resultCol;
 
     // Runner, takes in input from command line
     public static void main(String args[]) {
-        System.out.println("Welcome to MathMethods!");
-        System.out.println("---");
-        System.out.println("GCD of 8 and 28: " + MathMethods.gcd(8,28));
-        System.out.println("---");
-        System.out.println("LCM of 8 and 5: " + MathMethods.lcm(8,5));
-        System.out.println("---");
-        double[] polyList = {2.0,3.0,4.0};
-        System.out.println("Polynomial: " + MathMethods.poly(3.0, polyList) + " should be 47"); // Should be 47
-        System.out.println("---");
-        System.out.println("Fibonacci of 6: " + MathMethods.fibonacci(6));
-        System.out.println("---");
-        System.out.println("Powers of 2:");
-        for(int i = 0; i < 8; i++) {
-            System.out.println("2^" + i + " = " + MathMethods.power(2,i));
+        if(args.length < 1) {
+            System.out.println("Welcome to MathMethods!");
+            System.out.println("---");
+            System.out.println("GCD of 8 and 28: " + MathMethods.gcd(8,28));
+            System.out.println("---");
+            System.out.println("LCM of 8 and 5: " + MathMethods.lcm(8,5));
+            System.out.println("---");
+            double[] polyList = {2.0,3.0,4.0};
+            System.out.println("Polynomial: " + MathMethods.poly(3.0, polyList) + " should be 47"); // Should be 47
+            System.out.println("---");
+            System.out.println("Fibonacci 0 to 8:");
+            for(int i = 0; i <= 8; i++) {
+                System.out.print("" + MathMethods.fibonacci(i) + " ");
+            }
+            System.out.println("\n---");
+            System.out.println("Powers of 2:");
+            for(int i = 0; i < 8; i++) {
+                System.out.println("2^" + i + " = " + MathMethods.power(2,i));
+            }
+            System.out.println("---");
+            System.out.println("nth-roots:");
+            double powQuestion;
+            int root = 2;
+            double orig = 8;
+            double ans;
+            System.out.println("" + root + "√" + orig + " = " + (powQuestion = MathMethods.root(root,orig,0.00001)));
+            ans = MathMethods.power(powQuestion,root);
+            System.out.println("ans: " + ans + ", orig: " + orig);
+            System.out.println("---");
+            System.out.println("Square root of 64: " + MathMethods.sqrt(64,0.1));
+            System.out.println("Square root of 60: " + MathMethods.sqrt(60,0.00001));
+            System.out.println("---");
+            System.out.println("Factorial 4: " + MathMethods.factorial(4));
+            System.out.println("Factorial 7: " + MathMethods.factorial(7));
         }
-        System.out.println("---");
-        System.out.println("nth-roots:");
-        double powQuestion;
-        int root = 2;
-        double orig = 8;
-        double ans;
-        System.out.println("" + root + "√" + orig + " = " + (powQuestion = MathMethods.root(root,orig,0.00001)));
-        ans = MathMethods.power(powQuestion,root);
-        System.out.println("ans: " + ans + ", orig: " + orig);
-        System.out.println("---");
-        System.out.println("Square root of 64: " + MathMethods.sqrt(64,0.1));
-        System.out.println("Square root of 60: " + MathMethods.sqrt(60,0.00001));
     }
 
     public MathMethods() {
@@ -41,8 +47,17 @@ class MathMethods {
     }
 
     public static BigInteger factorial(int n) {
-
-        return BigInteger.valueOf(-1);
+        if(n == 0)
+            return BigInteger.valueOf(1);
+        else if (n < 0) {
+            System.out.println("BAD INPUT");
+            return BigInteger.valueOf(-1);
+        }
+        BigInteger result = BigInteger.valueOf(1);
+        for(int i = 1; i <= n; i++) {
+            result = result.multiply(BigInteger.valueOf(i));
+        }
+        return result;
     }
 
     public static BigInteger fibonacci(int n) {
@@ -80,7 +95,6 @@ class MathMethods {
                 n = n - m;
             }
         }
-        //System.out.println(m);
         return m;
     }
 
@@ -89,7 +103,8 @@ class MathMethods {
             System.out.println("BAD INPUT");
             return -1;
         }
-        return (m*n)/MathMethods.gcd(m,n);
+        // Neat shortcut
+        return (m * n) / MathMethods.gcd(m,n);
     }
 
     // coeff[0] + coeff[1] * x + coeff[2] * x^2 + ....
@@ -120,25 +135,20 @@ class MathMethods {
     // A function encapsulating the real function to deal
     // with negative exponents and other potential issues
     public static double power(double x, int n) {
-        if(x == 0 && n < 0) { // will end up dividng by zero!
+        if(x == 0 && n < 0) // will end up dividng by zero!
             throw new ArithmeticException("/ by 0");
-        }
-        if(n == 1) {
+        if(n == 1)
             return x;
-        }
-        else if(n == 0) {
+        else if(n == 0)
             return 1;
-        }
         else if(n < 0) {
-            n *= -1;
+            n *= -1; // Make n positive
             return 1 / powerPos(x, n);
         }
-        else if (n > 0) {
+        else if (n > 0)
             return powerPos(x, n);
-        }
-        else {
+        else
             return 0;
-        }
     }
 
     private static boolean isInRange(double num, double idealNum, double range) {
