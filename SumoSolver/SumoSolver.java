@@ -37,12 +37,33 @@ class SumoSolver {
         for(int i = 0; i < array.length - 1; i+= 2) {
             foodList[i/2] = new Food(array[i],array[i + 1]);
         }
-        for(Food f : foodList) {
-            System.out.println(f);
-        }
-        System.out.println("Money: " + money);
-        //First is 3 combos of food, second is 0 - money amount, last is tuple size
+        // // Print it out
+        // for(int i = 0; i < foodList.length - 1; i++) {
+        //     System.out.print(foodList[i] + ", ");
+        // }
+        // System.out.print(foodList[foodList.length - 1]);
+        // System.out.println(", Money: " + money);
+
+
         int[][][] memo = new int[foodList.length][money + 1][foodList.length];
+        //printList(memo);
+        // This loop is going through each of the rows 1 at a time
+        for(int i = 0; i < memo.length; i++) {
+            // Simplify by making "row" variable passed by reference
+            int[][] row = memo[i];
+            // Now we search through the row, each bit being a tuple
+            // But skip number 1, moot
+            for(int j = 1; j < row.length; j++) {
+                // Simplify even more by making "tuple", which is [x,x,x...]
+                int[] tuple = row[j];
+                int[] previousTuple = row[j - 1];
+                tuple[0] = j + (i + 1);
+                tuple[1] = j + 1;
+                tuple[2] = j + 2;
+                System.out.print("" + total(previousTuple, i) + " to " + total(tuple, i) + ", ");
+            }
+            System.out.println();
+        }
         printList(memo);
 
         // How it works
@@ -55,11 +76,31 @@ class SumoSolver {
         */
     }
 
+    public int total(int[] a, int to) {
+        int result = 0;
+        if(to > a.length) {
+            System.out.println("ERROR");
+            return -1;
+        }
+        for(int i = 0; i <= to; i++) {
+            result += a[i];
+        }
+        return result;
+    }
+
+    public int total(int[] a) {
+        int result = 0;
+        for(int i = 0; i < a.length; i++) {
+            result += a[i];
+        }
+        return result;
+    }
+
     public void printList(int list[][][]) {
-        String len = "";
+        final int LENGTH_OF_TUPLE = 1 + (list.length * 2);
         for(int m = 0; m < list[0].length; m++) {
             System.out.print(" " + m);
-            for(int n = 0; n < 7 - ("" + m).length(); n++) {
+            for(int n = 0; n < LENGTH_OF_TUPLE - ("" + m).length(); n++) {
                 System.out.print(" ");
             }
         }
