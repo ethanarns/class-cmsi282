@@ -31,18 +31,18 @@ class SumoSolver {
     }
 
     // The solver function itself
-    public void solve(int array[], int money) {
+    public void solve(int array[], final int money) {
         // Turn int array into Food
         Food[] foodList = new Food[(array.length - 1) / 2];
         for(int i = 0; i < array.length - 1; i+= 2) {
             foodList[i/2] = new Food(array[i],array[i + 1]);
         }
-        // // Print it out
-        // for(int i = 0; i < foodList.length - 1; i++) {
-        //     System.out.print(foodList[i] + ", ");
-        // }
-        // System.out.print(foodList[foodList.length - 1]);
-        // System.out.println(", Money: " + money);
+        // Print it out
+        for(int i = 0; i < foodList.length - 1; i++) {
+            System.out.print(foodList[i] + ", ");
+        }
+        System.out.print(foodList[foodList.length - 1]);
+        System.out.println(", Money: " + money);
 
 
         int[][][] memo = new int[foodList.length][money + 1][foodList.length];
@@ -57,12 +57,24 @@ class SumoSolver {
                 // Simplify even more by making "tuple", which is [x,x,x...]
                 int[] tuple = row[j];
                 int[] previousTuple = row[j - 1];
-                tuple[0] = j + (i + 1);
-                tuple[1] = j + 1;
-                tuple[2] = j + 2;
-                System.out.print("" + total(previousTuple, i) + " to " + total(tuple, i) + ", ");
+                int previousTotal = total(previousTuple);
+                // copy previous to this one
+                for(int t = 0; t < tuple.length; t++) {
+                    tuple[t] = previousTuple[t];
+                }
+                // First, is it the first?
+                if(i == 0) { // If so, lets set it up
+                    if(tuple[0] != 1) { // If its not already added
+                        if(foodList[0].cost <= money) { // If It won't overflow money
+                            tuple[0] = 1; // 1 means the first food item is present
+                        }
+                    }
+                }
+                // Now lets move on
+                if(i == 1) {
+                    // can you add it?
+                }
             }
-            System.out.println();
         }
         printList(memo);
 
@@ -78,8 +90,8 @@ class SumoSolver {
 
     public int total(int[] a, int to) {
         int result = 0;
-        if(to > a.length) {
-            System.out.println("ERROR");
+        if(to > a.length - 1 || to < 0) {
+            System.out.println("ERROR: 'to' in total() is out of bounds!");
             return -1;
         }
         for(int i = 0; i <= to; i++) {
