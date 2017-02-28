@@ -80,27 +80,32 @@ class SumoSolver {
                 }
             }
         }
-        printList(memo);
-    }
+        //printList(memo);
+        for(int i = 0; i < memo[foodList.length - 1][money].length; i++) {
+            if(memo[foodList.length - 1][money][i] == 1) {
+                System.out.println("$" + foodList[i].cost + " / " + foodList[i].pounds + " pounds");
+            }
+        }
+        int final_weight = 0;
+        for(int i = 0; i < foodList.length; i++) {
+            if(memo[foodList.length - 1][money][i] == 1) {
+                final_weight += foodList[i].pounds;
+            }
+        }
+        int final_count = 0;
+        for(int i = 0; i < foodList.length; i++) {
+            if(memo[foodList.length - 1][money][i] == 1) {
+                final_count++;
+            }
+        }
+        int final_cost = 0;
+        for(int i = 0; i < foodList.length; i++) {
+            if(memo[foodList.length - 1][money][i] == 1) {
+                final_cost += foodList[i].cost;
+            }
+        }
 
-    public int total(int[] a, int to) {
-        int result = 0;
-        if(to > a.length - 1 || to < 0) {
-            System.out.println("ERROR: 'to' in total() is out of bounds!");
-            return -1;
-        }
-        for(int i = 0; i <= to; i++) {
-            result += a[i];
-        }
-        return result;
-    }
-
-    public int total(int[] a) {
-        int result = 0;
-        for(int i = 0; i < a.length; i++) {
-            result += a[i];
-        }
-        return result;
+        System.out.println("" + final_count + " items / $" + final_cost + " / " + final_weight + " pounds");
     }
 
     public void printList(int list[][][]) {
