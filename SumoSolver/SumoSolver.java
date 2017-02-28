@@ -46,34 +46,12 @@ class SumoSolver {
 
 
         int[][][] memo = new int[foodList.length][money + 1][foodList.length];
-        //printList(memo);
         // This loop is going through each of the rows 1 at a time
         for(int i = 0; i < memo.length; i++) {
             // Simplify by making "row" variable passed by reference
             int[][] row = memo[i];
-            // Now we search through the row, each bit being a tuple
-            // But skip number 1, moot
             for(int j = 1; j < row.length; j++) {
-                // Simplify even more by making "tuple", which is [x,x,x...]
                 int[] tuple = row[j];
-                int[] previousTuple = row[j - 1];
-                int previousTotal = total(previousTuple);
-                // copy previous to this one
-                for(int t = 0; t < tuple.length; t++) {
-                    tuple[t] = previousTuple[t];
-                }
-                // First, is it the first?
-                if(i == 0) { // If so, lets set it up
-                    if(tuple[0] != 1) { // If its not already added
-                        if(foodList[0].cost <= money) { // If It won't overflow money
-                            tuple[0] = 1; // 1 means the first food item is present
-                        }
-                    }
-                }
-                // Now lets move on
-                if(i == 1) {
-                    // can you add it?
-                }
             }
         }
         printList(memo);
