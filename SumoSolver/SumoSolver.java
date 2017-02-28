@@ -72,19 +72,15 @@ class SumoSolver {
                             }
                         }
                     }
+                    else {
+                        for(int t = 0; t < foodList.length; t++) {
+                            tuple[t] = memo[i - 1][j][t];
+                        }
+                    }
                 }
             }
         }
         printList(memo);
-
-        // How it works
-        /*
-        Memoization vastly increases speed by saving previous sub-problems
-        and then going back and checking it later to see if its the most
-        optimal. So with this, we have a variety of food the sumo wrestler
-        can get 1 or 0 of. This is a variation of the change problem, which
-        you need a 2D array for. However you can only use 1 at most, and are trying to maximize profit
-        */
     }
 
     public int total(int[] a, int to) {
