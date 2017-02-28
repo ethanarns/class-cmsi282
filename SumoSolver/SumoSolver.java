@@ -1,5 +1,7 @@
 // http://pdorin.cs.lmu.edu/282.stuff/SumoSolver.html
 class SumoSolver {
+    public Food[] foodList;
+
     // Main method
     // Takes in an array of numbers as Strings from execution on command line
     // Checks arguments, converts to ints, then hands off to instantiated Solver
@@ -52,6 +54,12 @@ class SumoSolver {
             int[][] row = memo[i];
             for(int j = 1; j < row.length; j++) {
                 int[] tuple = row[j];
+                // System.out.print("[");
+                // for(int x = 0; x < tuple.length; x++) {
+                //     System.out.print(x + ", ");
+                // }
+                // System.out.println("]");
+                // System.out.println(total(tuple, foodList));
                 // First row fixing, dodges
                 if(i == 0) {
                     if(foodList[0].cost <= j) {
@@ -71,6 +79,8 @@ class SumoSolver {
                                 tuple[t] = otherTuple[t];
                             }
                         }
+                        // Okay, but is the one above better?
+
                     }
                     else {
                         for(int t = 0; t < foodList.length; t++) {
@@ -80,7 +90,7 @@ class SumoSolver {
                 }
             }
         }
-        //printList(memo);
+        printList(memo);
         for(int i = 0; i < memo[foodList.length - 1][money].length; i++) {
             if(memo[foodList.length - 1][money][i] == 1) {
                 System.out.println("$" + foodList[i].cost + " / " + foodList[i].pounds + " pounds");
@@ -105,7 +115,19 @@ class SumoSolver {
             }
         }
 
-        System.out.println("" + final_count + " items / $" + final_cost + " / " + final_weight + " pounds");
+        System.out.println("" + final_count + " items / $" + final_cost + " / " + total(memo[foodList.length - 1][money], foodList) + " pounds");
+    }
+
+
+    // Total functions
+    // Totals up all items' pounds in tuple
+    public int total(int array[], Food foods[]) {
+        int total = 0;
+        for(int i = 0; i < array.length; i++) {
+            if(array[i] == 1)
+                total+= foods[i].pounds;
+        }
+        return total;
     }
 
     public void printList(int list[][][]) {
