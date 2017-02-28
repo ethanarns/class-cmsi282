@@ -80,6 +80,12 @@ class SumoSolver {
                             }
                         }
                         // Okay, but is the one above better?
+                        System.out.println("One above: " + total(memo[i - 1][j], foodList));
+                        if(total(memo[i - 1][j], foodList) > total(tuple, foodList)) {
+                            for(int x = 0; x < tuple.length; x++) {
+                                tuple[x] = memo[i - 1][j][x];
+                            }
+                        }
 
                     }
                     else {
@@ -90,6 +96,8 @@ class SumoSolver {
                 }
             }
         }
+
+        // Finished! Lets print out the results
         printList(memo);
         for(int i = 0; i < memo[foodList.length - 1][money].length; i++) {
             if(memo[foodList.length - 1][money][i] == 1) {
