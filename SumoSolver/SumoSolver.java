@@ -1,6 +1,5 @@
 // http://pdorin.cs.lmu.edu/282.stuff/SumoSolver.html
 class SumoSolver {
-    public Food[] foodList;
 
     // Main method
     // Takes in an array of numbers as Strings from execution on command line
@@ -32,6 +31,7 @@ class SumoSolver {
         solver.solve(foodArray, foodArray[foodArray.length - 1]);
     }
 
+
     // The solver function itself
     public void solve(int array[], final int money) {
         // Turn int array into Food
@@ -40,11 +40,11 @@ class SumoSolver {
             foodList[i/2] = new Food(array[i],array[i + 1]);
         }
         // Print it out
-        for(int i = 0; i < foodList.length - 1; i++) {
-            System.out.print(foodList[i] + ", ");
-        }
-        System.out.print(foodList[foodList.length - 1]);
-        System.out.println(", Money: " + money);
+        // for(int i = 0; i < foodList.length - 1; i++) {
+        //     System.out.print(foodList[i] + ", ");
+        // }
+        // System.out.print(foodList[foodList.length - 1]);
+        // System.out.println(", Money: " + money);
 
 
         int[][][] memo = new int[foodList.length][money + 1][foodList.length];
@@ -54,12 +54,6 @@ class SumoSolver {
             int[][] row = memo[i];
             for(int j = 1; j < row.length; j++) {
                 int[] tuple = row[j];
-                // System.out.print("[");
-                // for(int x = 0; x < tuple.length; x++) {
-                //     System.out.print(x + ", ");
-                // }
-                // System.out.println("]");
-                // System.out.println(total(tuple, foodList));
                 // First row fixing, dodges
                 if(i == 0) {
                     if(foodList[0].cost <= j) {
@@ -80,7 +74,7 @@ class SumoSolver {
                             }
                         }
                         // Okay, but is the one above better?
-                        System.out.println("One above: " + total(memo[i - 1][j], foodList));
+                        //System.out.println("One above: " + total(memo[i - 1][j], foodList));
                         if(total(memo[i - 1][j], foodList) > total(tuple, foodList)) {
                             for(int x = 0; x < tuple.length; x++) {
                                 tuple[x] = memo[i - 1][j][x];
@@ -98,16 +92,10 @@ class SumoSolver {
         }
 
         // Finished! Lets print out the results
-        printList(memo);
+        //printList(memo);
         for(int i = 0; i < memo[foodList.length - 1][money].length; i++) {
             if(memo[foodList.length - 1][money][i] == 1) {
                 System.out.println("$" + foodList[i].cost + " / " + foodList[i].pounds + " pounds");
-            }
-        }
-        int final_weight = 0;
-        for(int i = 0; i < foodList.length; i++) {
-            if(memo[foodList.length - 1][money][i] == 1) {
-                final_weight += foodList[i].pounds;
             }
         }
         int final_count = 0;
