@@ -52,6 +52,27 @@ class SumoSolver {
             int[][] row = memo[i];
             for(int j = 1; j < row.length; j++) {
                 int[] tuple = row[j];
+                // First row fixing, dodges
+                if(i == 0) {
+                    if(foodList[0].cost <= j) {
+                        tuple[0] = 1;
+                    }
+                }
+                // Lets do the rest of it now
+                else {
+                    // Can I add the current?
+                    if(foodList[i].cost <= j) {
+                        tuple[i] = 1;
+                        // Great! Now, lets see what we have left...
+                        int remainder = j - foodList[i].cost;
+                        int[] otherTuple = memo[i - 1][remainder];
+                        for(int t = 0; t < tuple.length; t++) {
+                            if(tuple[t] != 1) {
+                                tuple[t] = otherTuple[t];
+                            }
+                        }
+                    }
+                }
             }
         }
         printList(memo);
