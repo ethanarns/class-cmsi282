@@ -42,28 +42,42 @@ public class BucketSort {
       sorterList.get(placementIndex).add(d);
     }
     System.out.println("\n" + sorterList);
-    int iReturn = 0;
     int iSort = 0;
-    while(iReturn < inputArray.size()) {
+    int i = 0;
+    int inputSize = inputArray.size();
+    inputArray.clear();
+    while(i < inputSize) {
       if(sorterList.get(iSort).size() == 0) {
         iSort++; // Place is empty, move up
         // Don't change iReturn
         continue;
       }
       else if(sorterList.get(iSort).size() == 1) {
-        inputArray.set(iReturn, sorterList.get(iSort).get(0));
+        inputArray.add(sorterList.get(iSort).get(0));
+        i++;
         iSort++; // Finished that place, move up
-        iReturn++; // Go to next place in arrayList
       }
       else { // the current spot in the sorterList must have multiple values!
-        // for now, lets just add in the shit 1 by 1
-        for(int i = 0; i < sorterList.get(iSort).size(); i++) {
-          inputArray.set(iReturn, sorterList.get(iSort).get(i));
-          iReturn++;
+        // Okay that works, so lets actually sort it again
+        int minPos = -1;
+        double di = -1;
+        while(sorterList.get(iSort).size() > 0) {
+          di = Double.MAX_VALUE;
+          for(int j = 0; j < sorterList.get(iSort).size(); j++) {
+            if(sorterList.get(iSort).get(j) < di) {
+              di = sorterList.get(iSort).get(j);
+              minPos = j;
+            }
+          }
+          //minPos found. Add and remove.
+          inputArray.add(sorterList.get(iSort).get(minPos));
+          i++;
+          sorterList.get(iSort).remove(minPos);
         }
         iSort++;
       }
     }
+    System.out.println(inputArray);
     // We got the list!
     return inputArray;
   }
