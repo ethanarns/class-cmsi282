@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class RamseyFind {
   public static void main(String[] args) {
@@ -20,14 +19,13 @@ public class RamseyFind {
   }
 
   public static boolean isRamsey(int total, int p1, int p2, int[] inputArray) {
-    //example: int[] inputArray = {5, 3, 2, 1, 1, 1};
     if(p1 + p2 != total) {
       System.out.println("First arguments do not match.");
       return false;
     }
     int countTest = 0;
     for(int x : inputArray) {
-      if( x > total - 1) {
+      if(x >= total) {
         System.out.println("Partition element too big");
         return false;
       }
@@ -37,6 +35,57 @@ public class RamseyFind {
       System.out.println("Invalid sum in partition.");
       return false;
     }
+
+    ArrayList<ArrayList<Integer>> allSets = getAllSetsIn(inputArray);
+    // Now we have all the subsets we need for the top level
+    for(int i = 0; i < allSets.size(); i++){
+      ArrayList<Integer> totalSet = new ArrayList<Integer>(allSets.get(allSets.size() - 1));
+      ArrayList<Integer> subSet = new ArrayList<Integer>(allSets.get(i));
+      boolean p1satisfied = false;
+      // First rule: is there a sublist of subSet that sums up to p1?
+      ArrayList<ArrayList<Integer>> subSet_1 = getAllSetsIn(subSet);
+      for(ArrayList<Integer> a : subSet_1) {
+        if(total(a) == p1) {
+          p1satisfied = true;
+          break;
+        }
+      }
+      if(p1satisfied)
+        return true;
+      // Second rule: is there a sublist of the compliment of subset that sums up to p2?
+      ArrayList<ArrayList<Integer>> subSet_2 = getAllSetsIn(getCompliment(totalSet, subSet));
+      for(ArrayList<Integer> a : subSet_2) {
+        if(total(a) == p2)
+          return true;
+      }
+    }
+
+    return false;
+  }
+
+  public static ArrayList<Integer> getCompliment(ArrayList<Integer> bigList, ArrayList<Integer> subList) {
+    for(int x : subList) {
+      // Check to see if any int in the bigList matches the subList
+      for(int i = 0; i < bigList.size(); i++) {
+        if(bigList.get(i) == x) {
+          bigList.remove(i);
+          break;
+        }
+      }
+    }
+    return bigList;
+  }
+
+  public static int total(ArrayList<Integer> list) {
+    int result = 0;
+    for(int x : list) {
+      result += x;
+    }
+    return result;
+  }
+
+  // Transfer to function due to sublevel searching
+  public static ArrayList<ArrayList<Integer>> getAllSetsIn(int[] inputArray) {
     // Get all possible sets
     ArrayList<ArrayList<Integer>> allSets = new ArrayList<ArrayList<Integer>>();
     allSets.add(new ArrayList<Integer>());
@@ -54,31 +103,14 @@ public class RamseyFind {
       // Replace the master list with the filled one
       allSets = newAllSets;
     }
-    allSets.remove(0); // Get rid of empty first
-    // Now we have all the subsets we need
-    for(int i = 0; i < 10; i++){ //allSets.size(); i++) {
-      ArrayList<Integer> totalSet = new ArrayList<Integer>(allSets.get(allSets.size() - 1));
-      ArrayList<Integer> subSet = new ArrayList<Integer>(allSets.get(i));
-      System.out.println(totalSet);
-      System.out.println(subSet);
-      System.out.println(getCompliment(totalSet, subSet));
-      System.out.println("---");
-    }
-
-    return true;
+    return allSets;
   }
 
-  public static ArrayList<Integer> getCompliment(ArrayList<Integer> bigList, ArrayList<Integer> subList) {
-    for(int x : subList) {
-      // Check to see if any int in the bigList matches the subList
-      for(int i = 0; i < bigList.size(); i++) {
-        if(bigList.get(i) == x) {
-          bigList.remove(i);
-          break;
-        }
-      }
+  public static ArrayList<ArrayList<Integer>> getAllSetsIn(ArrayList<Integer> inputArray) {
+    int[] result = new int[inputArray.size()];
+    for(int i = 0; i < result.length; i++) {
+      result[i] = inputArray.get(i);
     }
-    return bigList;
+    return getAllSetsIn(result);
   }
-
 }
