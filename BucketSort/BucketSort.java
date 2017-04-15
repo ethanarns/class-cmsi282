@@ -1,18 +1,32 @@
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 // http://pdorin.cs.lmu.edu/282.html#homework
-// FIX NEGATIVES
 public class BucketSort {
 
   public static void main(String args[]) {
-    double[] dubArray = {-0, -1};
-    // Feed array into ArrayList then insert
-    ArrayList<Double> dubList = new ArrayList<Double>();
-    for(int i = 0; i < dubArray.length; i++) {
-      dubList.add(dubArray[i]);
+    BufferedReader stdIn = new BufferedReader(new InputStreamReader(System.in));
+    ArrayList<Double> list = new ArrayList<Double>();
+    try {
+      if(!stdIn.ready()) {
+        System.out.println("NO DATA");
+        return;
+      }
+      for (String s = stdIn.readLine(); s != null; s = stdIn.readLine()) {
+          try {
+              list.add(Double.parseDouble(s));
+          } catch (Exception e) {
+              System.out.println("BAD DATA");
+              return;
+          }
+      }
+    } catch (Exception e) {
+      System.out.println("BAD DATA");
+      return;
     }
-    bucketSort(dubList);
+
+    bucketSort(list);
   }
 
   public static ArrayList<Double> bucketSort(ArrayList<Double> inputArray) {
@@ -42,7 +56,6 @@ public class BucketSort {
   }
 
   private static ArrayList<Double> bucketSortPos(ArrayList<Double> inputArray) {
-    //System.out.println(inputArray);
     double maxSize = 0;
     for(double x : inputArray) {
       if(x > maxSize) {
@@ -66,7 +79,6 @@ public class BucketSort {
     while(i < inputSize) {
       if(sorterList.get(iSort).size() == 0) {
         iSort++; // Place is empty, move up
-        // Don't change iReturn
         continue;
       }
       else if(sorterList.get(iSort).size() == 1) {
@@ -74,8 +86,7 @@ public class BucketSort {
         i++;
         iSort++; // Finished that place, move up
       }
-      else { // the current spot in the sorterList must have multiple values!
-        // Okay that works, so lets actually sort it again
+      else { // only other possibility is > 1
         int minPos = -1;
         double di = -1;
         while(sorterList.get(iSort).size() > 0) {
@@ -88,13 +99,12 @@ public class BucketSort {
           }
           //minPos found. Add and remove.
           inputArray.add(sorterList.get(iSort).get(minPos));
-          i++;
           sorterList.get(iSort).remove(minPos);
+          i++;
         }
         iSort++;
       }
     }
-    //System.out.println(inputArray);
     return inputArray;
   }
 }
