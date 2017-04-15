@@ -1,27 +1,48 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 
+// http://pdorin.cs.lmu.edu/282.html#homework
+// FIX NEGATIVES
 public class BucketSort {
+
   public static void main(String args[]) {
-    double[] dubArray = {2.0, 4.5, 1.9, 1.2, 3.3};
-    bucketSort(dubArray);
+    double[] dubArray = {-0, -1};
+    // Feed array into ArrayList then insert
+    ArrayList<Double> dubList = new ArrayList<Double>();
+    for(int i = 0; i < dubArray.length; i++) {
+      dubList.add(dubArray[i]);
+    }
+    bucketSort(dubList);
   }
 
-  public static double[] bucketSort(double[] inputArray) {
-    ArrayList<Double> toList = new ArrayList<Double>();
-    for(double x : inputArray) {
-      toList.add(x);
-    }
-    ArrayList<Double> resultList = bucketSort(toList);
-    double[] result = new double[toList.size()];
-    for(int i = 0; i < result.length; i++) {
-      result[i] = resultList.get(i);
-    }
-    return result;
-  }
-
-  private static ArrayList<Double> bucketSort(ArrayList<Double> inputArray) {
+  public static ArrayList<Double> bucketSort(ArrayList<Double> inputArray) {
     System.out.println(inputArray);
+    ArrayList<Double> pos = new ArrayList<Double>();
+    ArrayList<Double> neg = new ArrayList<Double>();
+    for(double d : inputArray) {
+      if(d >= 0) {
+        pos.add(d);
+      }
+      else {
+        d *= -1;
+        neg.add(d);
+      }
+    }
+    pos = bucketSortPos(pos);
+    neg = bucketSortPos(neg);
+    inputArray.clear();
+    for(int i = neg.size() - 1; i >= 0; i--) {
+      inputArray.add(neg.get(i) * -1);
+    }
+    for(double x : pos) {
+      inputArray.add(x);
+    }
+    System.out.println(inputArray);
+    return inputArray;
+  }
+
+  private static ArrayList<Double> bucketSortPos(ArrayList<Double> inputArray) {
+    //System.out.println(inputArray);
     double maxSize = 0;
     for(double x : inputArray) {
       if(x > maxSize) {
@@ -32,16 +53,12 @@ public class BucketSort {
     for(int i = 0; i <inputArray.size(); i++) {
       sorterList.add(new ArrayList<Double>());
     }
-    // We now have a working maxSize and inputArray to work with
-    // http://pdorin.cs.lmu.edu/282.html#homework
     // https://www.cs.usfca.edu/~galles/visualization/BucketSort.html
     // placement = value * NUMBER_OF_ELEMENTS/(MAX_ARRAY_VALUE + 1)
     for(double d : inputArray) {
       int placementIndex = (int)(d * inputArray.size()/(maxSize + 1));
-      System.out.print(placementIndex + "   ");
       sorterList.get(placementIndex).add(d);
     }
-    System.out.println("\n" + sorterList);
     int iSort = 0;
     int i = 0;
     int inputSize = inputArray.size();
@@ -77,8 +94,7 @@ public class BucketSort {
         iSort++;
       }
     }
-    System.out.println(inputArray);
-    // We got the list!
+    //System.out.println(inputArray);
     return inputArray;
   }
 }
