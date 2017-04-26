@@ -1,13 +1,12 @@
 public class Pentagon {
   public static void main(String[] args) {
-    System.out.println("Hello world!");
     int[] wat = {0,1,2};
     //int[] wat = {3, 2, 1, 0}; // broken one
     for(int x : wat) {
       System.out.print(x + " ");
     }
     System.out.println();
-    while(canPermute(wat)) {
+    for(int i = 0; i < 30; i++) {
       permute(wat);
     }
   }
@@ -18,27 +17,16 @@ public class Pentagon {
     list[pos2] = temp;
   }
 
-  public static boolean canPermute(int[] array) {
-    int pivotIndex = array.length - 1;
-    while(pivotIndex >= 0) {
-      pivotIndex--;
-      if(pivotIndex <= 0) {
-        return false;
-      }
-      if(array[pivotIndex - 1] < array[pivotIndex]) {
-        pivotIndex--;
-        break;
-      }
-    }
-    return true;
-  }
-
   public static int[] permute(int[] array) {
     int pivotIndex = array.length - 1; // set initial pivot to end
     while(pivotIndex >= 0) {
       pivotIndex--;
       if(pivotIndex <= 0) {
         // Cannot be permuted further
+        for(int x : array) {
+          System.out.print(x + " ");
+        }
+        System.out.println();
         return array;
       }
       if(array[pivotIndex - 1] < array[pivotIndex]) {
@@ -72,5 +60,41 @@ public class Pentagon {
     }
     System.out.println();
     return array; // temp
+  }
+
+
+
+
+
+  public static boolean nextPermutation(int[] array) {
+    // Find non-increasing suffix
+    int i = array.length - 1;
+    while (i > 0 && array[i - 1] >= array[i])
+        i--;
+    if (i <= 0)
+        return false;
+
+    // Find successor to pivot
+    int j = array.length - 1;
+    while (array[j] <= array[i - 1])
+        j--;
+    int temp = array[i - 1];
+    array[i - 1] = array[j];
+    array[j] = temp;
+
+    // Reverse suffix
+    j = array.length - 1;
+    while (i < j) {
+        temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+        i++;
+        j--;
+    }
+    for(int x : array) {
+      System.out.print(x + " ");
+    }
+    System.out.println();
+    return true;
   }
 }
