@@ -1,12 +1,12 @@
 public class Pentagon {
   public static void main(String[] args) {
-    int[] wat = {0,1,2,5,3,3,0};
+    int[] wat = {0,1,2};
     //int[] wat = {3, 2, 1, 0}; // broken one
     for(int x : wat) {
       System.out.print(x + " ");
     }
     System.out.println();
-    for(int i = 0; i < 1; i++) {
+    for(int i = 0; i < 10000; i++) {
       permute(wat);
     }
   }
@@ -26,43 +26,25 @@ public class Pentagon {
     }
     if(pivotIndex < 1) {
       // We hit the end; return the array unchanged
+      System.out.println("End hit.");
       return array;
     }
-    // System.out.println("Pivot is index " + pivotIndex + ": " + array[pivotIndex]);
+    System.out.println("Pivot is index " + pivotIndex + ": " + array[pivotIndex]);
 
     int right = array.length - 1;
     while (array[right] <= array[pivotIndex - 1]) {
         right--;
     }
 
-    // System.out.println("Second pivot is index " + right + ": " + array[right]);
-
-    // for(int x : array) {
-    //   System.out.print(x + " ");
-    // }
-    // System.out.println();
-
-    // System.out.println("Swap:");
     swap(array, right, pivotIndex - 1);
 
-    // for(int x : array) {
-    //   System.out.print(x + " ");
-    // }
-    // System.out.println();
-
-    // now just reverse the substring pivotIndex + 1 to end
+    // now just reverse the substring pivotIndex to end
     int swapArrayLength = (array.length - pivotIndex) / 2;
-    // System.out.println("Swap length: " + swapArrayLength);
     for(int i = pivotIndex; i < array.length - swapArrayLength; i++) {
       int realRightIndex = array.length - i + pivotIndex - 1;
       swap(array, i, realRightIndex);
     }
 
-    // Print le array
-    for(int x : array) {
-      System.out.print(x + " ");
-    }
-    System.out.println();
     return array; // temp
   }
 }
